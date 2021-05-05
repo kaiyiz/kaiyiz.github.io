@@ -1,117 +1,73 @@
-/*
-	Strata by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
+$(window).on('load', function() {
 
-(function($) {
+    $('.level-bar-inner').each(function() {
+    
+        var itemWidth = $(this).data('level');
+        
+        $(this).animate({
+            width: itemWidth
+        }, 800);
+        
+    });
 
-	var $window = $(window),
-		$body = $('body'),
-		$header = $('#header'),
-		$footer = $('#footer'),
-		$main = $('#main'),
-		settings = {
+});
 
-			// Parallax background effect?
-				parallax: true,
 
-			// Parallax factor (lower = more intense, higher = less intense).
-				parallaxFactor: 20
+jQuery(document).ready(function($) {
 
-		};
 
-	// Breakpoints.
-		breakpoints({
-			xlarge:  [ '1281px',  '1800px' ],
-			large:   [ '981px',   '1280px' ],
-			medium:  [ '737px',   '980px'  ],
-			small:   [ '481px',   '736px'  ],
-			xsmall:  [ null,      '480px'  ],
-		});
+    /*======= Skillset *=======*/
+    
+    $('.level-bar-inner').css('width', '0');
+    
+    
+    
+    /* Bootstrap Tooltip for Skillset */
+    $('.level-label').tooltip();
+    
+    
+    /* jQuery RSS - https://github.com/sdepold/jquery-rss */
+    
+    $("#rss-feeds").rss(
+    
+        //Change this to your own rss feeds
+        "https://feeds.feedburner.com/TechCrunch/startups",
+        
+        {
+        // how many entries do you want?
+        // default: 4
+        // valid values: any integer
+        limit: 3,
+        
+        // the effect, which is used to let the entries appear
+        // default: 'show'
+        // valid values: 'show', 'slide', 'slideFast', 'slideSynced', 'slideFastSynced'
+        effect: 'slideFastSynced',
+        
+        // will request the API via https
+	    // default: false
+	    // valid values: false, true
+	    ssl: true,
+        
+        // outer template for the html transformation
+        // default: "<ul>{entries}</ul>"
+        // valid values: any string
+        layoutTemplate: "<div class='items'>{entries}</div>",
+        
+        // inner template for each entry
+        // default: '<li><a href="{url}">[{author}@{date}] {title}</a><br/>{shortBodyPlain}</li>'
+        // valid values: any string
+        entryTemplate: '<div class="item"><h3 class="title"><a href="{url}" target="_blank">{title}</a></h3><div><p>{shortBodyPlain}</p><a class="more-link" href="{url}" target="_blank"><i class="fas fa-external-link-alt"></i>Read more</a></div></div>'
+        
+        }
+    );
+    
+    /* Github Calendar - https://github.com/IonicaBizau/github-calendar */
+    new GitHubCalendar("#github-graph", "IonicaBizau", { responsive: true });
+    
+    
+    /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
+    GitHubActivity.feed({ username: "mdo", selector: "#ghfeed" });
 
-	// Play initial animations on page load.
-		$window.on('load', function() {
-			window.setTimeout(function() {
-				$body.removeClass('is-preload');
-			}, 100);
-		});
 
-	// Touch?
-		if (browser.mobile) {
-
-			// Turn on touch mode.
-				$body.addClass('is-touch');
-
-			// Height fix (mostly for iOS).
-				window.setTimeout(function() {
-					$window.scrollTop($window.scrollTop() + 1);
-				}, 0);
-
-		}
-
-	// Footer.
-		breakpoints.on('<=medium', function() {
-			$footer.insertAfter($main);
-		});
-
-		breakpoints.on('>medium', function() {
-			$footer.appendTo($header);
-		});
-
-	// Header.
-
-		// Parallax background.
-
-			// Disable parallax on IE (smooth scrolling is jerky), and on mobile platforms (= better performance).
-				if (browser.name == 'ie'
-				||	browser.mobile)
-					settings.parallax = false;
-
-			if (settings.parallax) {
-
-				breakpoints.on('<=medium', function() {
-
-					$window.off('scroll.strata_parallax');
-					$header.css('background-position', '');
-
-				});
-
-				breakpoints.on('>medium', function() {
-
-					$header.css('background-position', 'left 0px');
-
-					$window.on('scroll.strata_parallax', function() {
-						$header.css('background-position', 'left ' + (-1 * (parseInt($window.scrollTop()) / settings.parallaxFactor)) + 'px');
-					});
-
-				});
-
-				$window.on('load', function() {
-					$window.triggerHandler('scroll');
-				});
-
-			}
-
-	// Main Sections: Two.
-
-		// Lightbox gallery.
-			$window.on('load', function() {
-
-				$('#two').poptrox({
-					caption: function($a) { return $a.next('h3').text(); },
-					overlayColor: '#2c2c2c',
-					overlayOpacity: 0.85,
-					popupCloserText: '',
-					popupLoaderText: '',
-					selector: '.work-item a.image',
-					usePopupCaption: true,
-					usePopupDefaultStyling: false,
-					usePopupEasyClose: false,
-					usePopupNav: true,
-					windowMargin: (breakpoints.active('<=small') ? 0 : 50)
-				});
-
-			});
-
-})(jQuery);
+});
